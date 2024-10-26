@@ -9,30 +9,38 @@ import { popup, database, changePanel, accountSelect, addAccount, config, setSta
 
 class Login {
     static id = "login";
+
     async init(config) {
         this.config = config;
         this.db = new database();
 
-        if (typeof this.config.online == 'boolean') {
-            this.config.online ? this.getMicrosoft() : this.getCrack()
-        } else if (typeof this.config.online == 'string') {
-            if (this.config.online.match(/^(http|https):\/\/[^ "]+$/)) {
-                this.getAZauth();
-            }
-        }
-        
+        // Mostrar los botones de inicio de sesión en la interfaz
+        let loginHome = document.querySelector('.login-home');
+        let microsoftBtn = document.querySelector('.connect-microsoft'); // Botón para Microsoft
+        let crackBtn = document.querySelector('.connect-crack'); // Botón para el inicio de sesión sin conexión
+        loginHome.style.display = 'block';
+
+        // Evento para el botón de inicio de sesión de Microsoft
+        microsoftBtn.addEventListener("click", () => {
+            this.getMicrosoft();
+        });
+
+        // Evento para el botón de inicio de sesión sin conexión
+        crackBtn.addEventListener("click", () => {
+            this.getCrack();
+        });
+
+        // Botón para cancelar e ir a configuración
         document.querySelector('.cancel-home').addEventListener('click', () => {
-            document.querySelector('.cancel-home').style.display = 'none'
-            changePanel('settings')
-        })
+            document.querySelector('.cancel-home').style.display = 'none';
+            changePanel('settings');
+        });
     }
 
     async getMicrosoft() {
         console.log('Initializing Microsoft login...');
         let popupLogin = new popup();
-        let loginHome = document.querySelector('.login-home');
-        let microsoftBtn = document.querySelector('.connect-home');
-        loginHome.style.display = 'block';
+        let microsoftBtn = document.querySelector('.connect-microsoft');
 
         microsoftBtn.addEventListener("click", () => {
             popupLogin.openPopup({
@@ -46,7 +54,7 @@ class Login {
                     popupLogin.closePopup();
                     return;
                 } else {
-                    await this.saveData(account_connect)
+                    await this.saveData(account_connect);
                     popupLogin.closePopup();
                 }
 
@@ -57,11 +65,11 @@ class Login {
                     options: true
                 });
             });
-        })
+        });
     }
 
     async getCrack() {
-        console.log('Initializing offline login...');
+        console.log('Inicializando inicio de sesión sin conexión...');
         let popupLogin = new popup();
         let loginOffline = document.querySelector('.login-offline');
 
@@ -72,8 +80,8 @@ class Login {
         connectOffline.addEventListener('click', async () => {
             if (emailOffline.value.length < 3) {
                 popupLogin.openPopup({
-                    title: 'Erreur',
-                    content: 'Votre pseudo doit faire au moins 3 caractères.',
+                    title: 'Error',
+                    content: 'Su apodo debe tener al menos 3 caracteres.',
                     options: true
                 });
                 return;
@@ -81,8 +89,8 @@ class Login {
 
             if (emailOffline.value.match(/ /g)) {
                 popupLogin.openPopup({
-                    title: 'Erreur',
-                    content: 'Votre pseudo ne doit pas contenir d\'espaces.',
+                    title: 'Error',
+                    content: 'Tu apodo no debe contener espacios.',
                     options: true
                 });
                 return;
@@ -98,7 +106,7 @@ class Login {
                 });
                 return;
             }
-            await this.saveData(MojangConnect)
+            await this.saveData(MojangConnect);
             popupLogin.closePopup();
         });
     }
@@ -181,11 +189,11 @@ class Login {
                         return;
                     }
 
-                    await this.saveData(AZauthConnect)
+                    await this.saveData(AZauthConnect);
                     PopupLogin.closePopup();
                 });
             } else if (!AZauthConnect.A2F) {
-                await this.saveData(AZauthConnect)
+                await this.saveData(AZauthConnect);
                 PopupLogin.closePopup();
             }
         });
@@ -193,19 +201,19 @@ class Login {
 
     async saveData(connectionData) {
         let configClient = await this.db.readData('configClient');
-        let account = await this.db.createData('accounts', connectionData)
-        let instanceSelect = configClient.instance_selct
-        let instancesList = await config.getInstanceList()
+        let account = await this.db.createData('accounts', connectionData);
+        let instanceSelect = configClient.instance_selct;
+        let instancesList = await config.getInstanceList();
         configClient.account_selected = account.ID;
 
         for (let instance of instancesList) {
             if (instance.whitelistActive) {
-                let whitelist = instance.whitelist.find(whitelist => whitelist == account.name)
+                let whitelist = instance.whitelist.find(whitelist => whitelist == account.name);
                 if (whitelist !== account.name) {
                     if (instance.name == instanceSelect) {
-                        let newInstanceSelect = instancesList.find(i => i.whitelistActive == false)
-                        configClient.instance_selct = newInstanceSelect.name
-                        await setStatus(newInstanceSelect.status)
+                        let newInstanceSelect = instancesList.find(i => i.whitelistActive == false);
+                        configClient.instance_selct = newInstanceSelect.name;
+                        await setStatus(newInstanceSelect.status);
                     }
                 }
             }
@@ -217,4 +225,5 @@ class Login {
         changePanel('home');
     }
 }
+
 export default Login;

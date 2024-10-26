@@ -12,6 +12,7 @@
     border-radius: 15px;
     text-align: center;
     min-width: 40%;
+    max-width: 80%;
 }
 
 .login-home,
@@ -23,6 +24,8 @@
 
 .login-text {
     font-size: 1.3rem;
+    color: var(--color);
+    margin-bottom: 1rem;
 }
 
 .connect,
@@ -35,16 +38,25 @@
     font-size: inherit;
     font-weight: bold;
     margin: 15px 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.connect:hover,
+.cancel:hover {
+    background: var(--element-color);
+    color: var(--background);
 }
 
 .input-login .email,
 .input-login .password,
-.A2F {
+.input-login .A2F {
     color: var(--color);
     background: none;
     border: solid 2px var(--element-color);
     border-radius: 30px;
-    width: 50%;
+    width: 70%;
+    max-width: 100%;
     padding: 0.4rem 1rem;
     margin-top: 10px;
 }
