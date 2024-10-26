@@ -1,7 +1,7 @@
 {
     "name": "adrn-launcher",
     "preductname": "ADRN LAUNCHER",
-    "version": "0.0.1",
+    "version": "5.0.0",
     "description": "Launcher de Minecraft creado por AramRiv",
     "main": "src/app.js",
     "author": {
