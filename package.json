@@ -1,15 +1,15 @@
 {
     "name": "adrn-launcher",
     "preductname": "ADRN LAUNCHER",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "description": "Launcher de Minecraft creado por AramRiv",
     "main": "src/app.js",
     "author": {
         "name": "ADRN STUDIOS",
         "email": "aramriv23@gmail.com",
-        "url": "https://github.com/luuxis"
+        "url": "https://github.com/AramRivera"
     },
-    "url": "http://172.20.166.62/adrn/",
+    "url": "http://147.185.221.23:44285/adrn/",
     "scripts": {
         "start": "cross-env-shell NODE_ENV=dev electron .",
         "dev": "cross-env-shell DEV_TOOL=open nodemon --exec npm start",
@@ -39,6 +39,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/AramRivera/ADRN-Laucnher.git"
+        "url": "git+https://github.com/AramRivera/ADRN-Launcher.git"
     }
 }
